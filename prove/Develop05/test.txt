@@ -1,0 +1,3 @@
+test goal 01,100,True
+test goal 2,50,False
+test goal 3,239,False
