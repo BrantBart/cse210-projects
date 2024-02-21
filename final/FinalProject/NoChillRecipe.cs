@@ -1,9 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-    public class NoChillRecipe : Recipe
+public class NoChillRecipe : Recipe
+{
+    public NoChillRecipe(string title, List<Ingredient> ingredients, string instructions)
+        : base(title, ingredients, "Room temperature", instructions)
     {
-        
+        // NoChillRecipe typically uses room temperature
     }
+}

@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 
 public class BakeRecipe : Recipe
 {
-    public static void Process() { }
-
-    public static void Description() { }
+    public BakeRecipe(string title, List<Ingredient> ingredients, string temperature, string instructions)
+        : base(title, ingredients, temperature, instructions)
+    {
+        // BakeRecipe allows specifying temperature
+    }
 }

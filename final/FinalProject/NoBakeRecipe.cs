@@ -1,9 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 public class NoBakeRecipe : Recipe
 {
-
+    public NoBakeRecipe(string title, List<Ingredient> ingredients, string temperature, string instructions)
+        : base(title, ingredients, temperature, instructions)
+    {
+        // NoBakeRecipe allows specifying temperature
+    }
 }

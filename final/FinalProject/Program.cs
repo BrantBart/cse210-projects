@@ -1,15 +1,16 @@
 using System;
-using System.Collections.Generic;
 
 class Program
 {
     static void Main(string[] args)
     {
         RecipeManager recipeManager = new RecipeManager();
+        Bake bake = new Bake(); // Instantiate Bake class
+
         Console.Clear();
         Console.WriteLine("Welcome to the baking recipe program!");
         string choice = "";
-        while (choice != "7")
+        while (choice != "8") // Adjusting the exit option to accommodate the new functionality
         {
             Console.WriteLine("-----------------------------------------");
             Console.WriteLine("1. Create New Recipe");
@@ -17,14 +18,14 @@ class Program
             Console.WriteLine("3. Save Recipes");
             Console.WriteLine("4. Bake Cookies");
             Console.WriteLine("5. Inventory Check");
-            Console.WriteLine("6. Quit");
+            Console.WriteLine("6. Select Recipe to Bake");
+            Console.WriteLine("7. Quit");
             choice = Console.ReadLine();
             Console.Clear();
             switch (choice)
             {
                 case "1":
                     recipeManager.Create();
-                    // adding the different recipe types.
                     break;
                 case "2":
                     recipeManager.List();
@@ -34,17 +35,27 @@ class Program
                     break;
                 case "4":
                     recipeManager.Make();
-                    // req
                     break;
                 case "5":
                     recipeManager.CheckInventory();
                     break;
                 case "6":
+                    bake.DisplayRecipes(); // Display recipes to select from
+                    Console.WriteLine("Enter the number of the recipe you want to bake:");
+                    if (int.TryParse(Console.ReadLine(), out int selectedRecipeIndex))
+                    {
+                        bake.SelectRecipe(selectedRecipeIndex);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter a valid number.");
+                    }
+                    break;
+                case "7":
                     Console.WriteLine("Goodbye!");
-                    //will add an animation here
                     break;
                 default:
-                    Console.WriteLine("Invalid choice. Please enter a number from 1 to 6.");
+                    Console.WriteLine("Invalid choice. Please enter a number from 1 to 7.");
                     break;
             }
         }
