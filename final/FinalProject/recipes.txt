@@ -1,5 +1,12 @@
-chocolate chip cookies
-Ingredient,Ingredient,Ingredient
-300
-heat in oven for 10 minutes
+Title: Chocolate Chip
+Ingredients: flour (1 cup)
+Temperature: 100
+Quantity per Batch: 12
+Instructions: notes here chocolate chip
+
+Title: peanut butter
+Ingredients: kisses (13),peanut butter (1 1/2 cup)
+Temperature: 130
+Quantity per Batch: 13
+Instructions: bad batch
 

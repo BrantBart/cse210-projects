@@ -8,4 +8,9 @@ public class Ingredient
         Name = name;
         Quantity = quantity;
     }
+
+    public override string ToString()
+    {
+        return $"{Name} ({Quantity})";
+    }
 }

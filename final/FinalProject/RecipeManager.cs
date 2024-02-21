@@ -11,77 +11,17 @@ public class RecipeManager
         Console.WriteLine("Enter recipe name:");
         string recipeName = Console.ReadLine();
 
-        Console.WriteLine("Select type of cookie:");
-        Console.WriteLine("1. Bake");
-        Console.WriteLine("2. No Chill");
-        Console.WriteLine("3. No Bake");
-        string choice = Console.ReadLine();
-
-        switch (choice)
-        {
-            case "1":
-                recipes.Add(CreateBakeRecipe(recipeName));
-                break;
-            case "2":
-                recipes.Add(CreateNoChillRecipe(recipeName));
-                break;
-            case "3":
-                recipes.Add(CreateNoBakeRecipe(recipeName));
-                break;
-            default:
-                Console.WriteLine("Invalid choice. Recipe not created.");
-                break;
-        }
-    }
-
-    private BakeRecipe CreateBakeRecipe(string recipeName)
-    {
-        Console.WriteLine("Enter oven temperature (in Fahrenheit):");
-        string temperature = Console.ReadLine();
-
-        return new BakeRecipe(recipeName, CreateIngredients(), temperature, CreateInstructions());
-    }
-
-    private NoChillRecipe CreateNoChillRecipe(string recipeName)
-    {
-        return new NoChillRecipe(recipeName, CreateIngredients(), CreateInstructions());
-    }
-
-    private NoBakeRecipe CreateNoBakeRecipe(string recipeName)
-    {
-        Console.WriteLine("Select heat level:");
-        Console.WriteLine("1. Low");
-        Console.WriteLine("2. Medium");
-        Console.WriteLine("3. High");
-        string heatLevel = Console.ReadLine();
-        string temperature = GetNoBakeTemperature(heatLevel);
-
-        return new NoBakeRecipe(recipeName, CreateIngredients(), temperature, CreateInstructions());
-    }
-
-    private string GetNoBakeTemperature(string heatLevel)
-    {
-        switch (heatLevel)
-        {
-            case "1":
-                return "Low heat";
-            case "2":
-                return "Medium heat";
-            case "3":
-                return "High heat";
-            default:
-                return "Unknown";
-        }
+        recipes.Add(new Recipe(recipeName, CreateIngredients(), CreateTemperature(), CreateInstructions(), CreateQuantityMade()));
+        Console.Clear();
     }
 
     private List<Ingredient> CreateIngredients()
     {
         List<Ingredient> ingredients = new List<Ingredient>();
 
-        Console.WriteLine("Enter ingredients (ingredient name, quantity):");
         while (true)
         {
-            Console.WriteLine("Enter ingredient name (leave blank to finish adding ingredients):");
+            Console.WriteLine("Enter an ingredient name (leave blank if no more ingredients):");
             string ingredientName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(ingredientName))
                 break;
@@ -95,51 +35,97 @@ public class RecipeManager
         return ingredients;
     }
 
+    private string CreateTemperature()
+    {
+        Console.WriteLine("Oven temperature:");
+        return Console.ReadLine();
+    }
+
     private string CreateInstructions()
     {
-        Console.WriteLine("Enter cooking instructions:");
+        Console.WriteLine("Enter cooking notes or directions:");
+        return Console.ReadLine();
+    }
+
+    private string CreateQuantityMade()
+    {
+        Console.WriteLine("How many cookies does one batch make?:");
         return Console.ReadLine();
     }
 
     public void List()
     {
-        Console.WriteLine("Recipes:");
-        foreach (var recipe in recipes)
+        Console.WriteLine("Recipes ready to be saved:");
+        for (int i = 0; i < recipes.Count; i++)
         {
-            Console.WriteLine(recipe.Title);
+            Console.WriteLine($"{i + 1}. {recipes[i].Title}");
         }
+        Console.WriteLine();
     }
 
     public void Save()
     {
         try
         {
-            using (StreamWriter sw = new StreamWriter("recipes.txt"))
+            using (StreamWriter sw = new StreamWriter("recipes.txt", true))
             {
                 foreach (var recipe in recipes)
                 {
-                    sw.WriteLine(recipe.Title);
-                    sw.WriteLine(string.Join(",", recipe.Ingredients));
-                    sw.WriteLine(recipe.Temperature);
-                    sw.WriteLine(recipe.Instructions);
+                    sw.WriteLine($"Title: {recipe.Title}");
+                    sw.WriteLine($"Ingredients: {string.Join(",", recipe.Ingredients.Select(ing => $"{ing.Name} ({ing.Quantity})"))}");
+                    sw.WriteLine($"Temperature: {recipe.Temperature}");
+                    sw.WriteLine($"Quantity per Batch: {recipe.QuantityPerBatch}");
+                    sw.WriteLine($"Instructions: {recipe.Instructions}");
                     sw.WriteLine();
                 }
             }
+            Console.Clear();
             Console.WriteLine("Recipes saved successfully!");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error saving recipes: {ex.Message}");
         }
+        recipes.Clear();
     }
 
-    public void Make()
+    public void Load()
     {
-        // Implement logic for making cookies
+        Console.Clear();
+        try
+        {
+            using (StreamReader sr = new StreamReader("recipes.txt"))
+            {
+                Console.Clear();
+                Console.WriteLine("Loaded Recipes:");
+                Console.WriteLine("_______________________________");
+
+                while (!sr.EndOfStream)
+                {
+                    string titleLine = sr.ReadLine();
+                    string ingredientsLine = sr.ReadLine();
+                    string instructionsLine = sr.ReadLine();
+                    sr.ReadLine(); // Read the empty line separating recipes
+
+                    if (titleLine != null && titleLine.StartsWith("Title:"))
+                    {
+                        string title = titleLine.Substring("Title:".Length).Trim();
+                        string ingredients = ingredientsLine?.Substring("Ingredients:".Length).Trim() ?? "";
+                        string instructions = instructionsLine?.Substring("Instructions:".Length).Trim() ?? "";
+
+                        Console.WriteLine($"Title: {title}");
+                        Console.WriteLine($"Ingredients: {ingredients}");
+                        Console.WriteLine($"Instructions: {instructions}");
+                        Console.WriteLine("_______________________________");
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading recipes: {ex.Message}");
+        }
     }
 
-    public void CheckInventory()
-    {
-        // Implement logic for checking inventory
-    }
 }
+
