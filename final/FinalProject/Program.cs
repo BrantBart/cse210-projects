@@ -6,7 +6,6 @@ class Program
     {
         RecipeManager recipeManager = new RecipeManager();
         Bake bake = new Bake(); // Instantiate Bake class
-
         Console.Clear();
         Console.WriteLine("Welcome to the baking recipe program!");
         string choice = "";
@@ -14,14 +13,16 @@ class Program
         {
             Console.WriteLine("-----------------------------------------");
             Console.WriteLine("1. Create New Recipe");
-            Console.WriteLine("2. List Recipes");
+            Console.WriteLine("2. List New Recipes");
             Console.WriteLine("3. Save Recipes");
-            Console.WriteLine("4. Bake Cookies");
-            Console.WriteLine("5. Inventory Check");
-            Console.WriteLine("6. Select Recipe to Bake");
-            Console.WriteLine("7. Quit");
+            Console.WriteLine("4. Load Recipes");
+            Console.WriteLine("5. Make Cookies");
+            Console.WriteLine("6. Sell or Donate an ammount");
+            Console.WriteLine("7. Check current inventory");
+            Console.WriteLine("8. Quit Program");
             choice = Console.ReadLine();
             Console.Clear();
+            Console.WriteLine("Main Menu");
             switch (choice)
             {
                 case "1":
@@ -34,25 +35,21 @@ class Program
                     recipeManager.Save();
                     break;
                 case "4":
-                    recipeManager.Make();
+                    recipeManager.Load();
                     break;
                 case "5":
-                    recipeManager.CheckInventory();
+                    recipeManager.MakeCookies();
                     break;
                 case "6":
-                    bake.DisplayRecipes(); // Display recipes to select from
-                    Console.WriteLine("Enter the number of the recipe you want to bake:");
-                    if (int.TryParse(Console.ReadLine(), out int selectedRecipeIndex))
-                    {
-                        bake.SelectRecipe(selectedRecipeIndex);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Please enter a valid number.");
-                    }
+                    recipeManager.Sell();
+                    recipeManager.Donate();
                     break;
                 case "7":
                     Console.WriteLine("Goodbye!");
+                    break;
+                case "8":
+                    Console.Clear();
+                    Console.WriteLine("Terminating Program...");
                     break;
                 default:
                     Console.WriteLine("Invalid choice. Please enter a number from 1 to 7.");

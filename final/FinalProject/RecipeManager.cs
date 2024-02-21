@@ -78,6 +78,7 @@ public class RecipeManager
     {
         List<Ingredient> ingredients = new List<Ingredient>();
 
+        Console.WriteLine("Enter ingredients (ingredient name, quantity):");
         while (true)
         {
             Console.WriteLine("Enter ingredient name (leave blank to finish adding ingredients):");
